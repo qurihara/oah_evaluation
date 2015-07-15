@@ -48,6 +48,8 @@ namespace OAH_Evaluation
 
         void Form1_FormClosed(object sender, FormClosedEventArgs e)
         {
+            arduino.SetPinMode(ArduinoUnoPins.D9_PWM, PinModes.Input);
+            arduino.SetPinMode(ArduinoUnoPins.D10_PWM, PinModes.Input);
             // dispose of the object
             arduino.Dispose();
         }
