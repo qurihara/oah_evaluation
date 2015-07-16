@@ -40,7 +40,7 @@ namespace OAH_Evaluation
 
             // Create a new connection
             //var arduino = new ArduinoUno("COM3");
-            arduino = new ArduinoUno("COM3");
+            arduino = new ArduinoUno("COM4");
             arduino.SetPinMode(ArduinoUnoPins.D13, PinModes.Output);
 
             this.FormClosed += Form1_FormClosed;
