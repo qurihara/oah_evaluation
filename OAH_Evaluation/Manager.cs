@@ -72,7 +72,20 @@ namespace OAH_Evaluation
         }
         protected void Finish()
         {
-            //TODO
+            Manager.tDisplay.labelTaskDesc.Text = "実験終了！ありがとうございました！";
+            Manager.tDisplay.labelLeftMost.Text = "";
+            Manager.tDisplay.labelRightMost.Text = "";
+            Manager.tDisplay.buttonOK.Enabled = false;
+            Manager.tDisplay.trackBarScale.Value = 500;
+            Manager.tDisplay.Visible = true;
+            WaitAnm anm = new WaitAnm(3000);
+            anm.AnmFinishedHandler += close_app;
+            anm.Start();
+        }
+
+        void close_app(object sender, EventArgs e)
+        {
+            Application.Exit();
         }
 
         public bool StartNextTask()
@@ -128,7 +141,7 @@ namespace OAH_Evaluation
 
     public class Task
     {
-        static bool debug = true;
+        public static bool debug = false;//true;
 
         protected int id;
         public int Id
@@ -163,18 +176,23 @@ namespace OAH_Evaluation
             Manager.tDisplay.Visible = true;
 
             WaitAnm anm = new WaitAnm(1000);
-            anm.AnmFinishedHandler += DisplayTask;
             if (!debug)
             {
                 Servo_reset();
-                anm.AnmFinishedHandler += Servo_set;
+//                anm.AnmFinishedHandler += Servo_set;
+            }
+            else
+            {
+                anm.AnmFinishedHandler += DisplayTask;
             }
             anm.Start();
         }
 
         void DisplayTask(object sender, EventArgs e)
         {
-            Manager.tDisplay.labelTaskDesc.Text = "[" + id.ToString() + "] " + taskDesc;
+            //debug
+            Manager.tDisplay.labelTaskDesc.Text = "[" + degree.ToString() + "] " + taskDesc;
+            //Manager.tDisplay.labelTaskDesc.Text = "[" + id.ToString() + "] " + taskDesc;
             Manager.tDisplay.labelLeftMost.Text = labelLeftMost;
             Manager.tDisplay.labelRightMost.Text = labelRightMost;
             Manager.tDisplay.buttonOK.Enabled = true;
@@ -184,16 +202,31 @@ namespace OAH_Evaluation
             ArduinoUno arduino = Manager.arduino;
             arduino.SetPinMode(ArduinoUnoPins.D9_PWM, PinModes.Servo);
             arduino.SetPinMode(ArduinoUnoPins.D10_PWM, PinModes.Servo);
-            arduino.SetServo(ArduinoUnoPins.D9_PWM, 0);
-            arduino.SetServo(ArduinoUnoPins.D10_PWM, 0);
+            //arduino.SetServo(ArduinoUnoPins.D9_PWM, 90);
+            //arduino.SetServo(ArduinoUnoPins.D10_PWM, 90);
+            WaitAnm anm = new WaitAnm(1000);
+            anm.AnmFinishedHandler += Servo_reset2;
+            anm.Start();
+        }
+        void Servo_reset2(object sender, EventArgs e)
+        {
+            ArduinoUno arduino = Manager.arduino;
+            arduino.SetServo(ArduinoUnoPins.D9_PWM, 90);
+            arduino.SetServo(ArduinoUnoPins.D10_PWM, 90);
+            WaitAnm anm = new WaitAnm(1000);
+            anm.AnmFinishedHandler += Servo_set;
+            anm.Start();
         }
         void Servo_set(object sender, EventArgs e)
         {
             ArduinoUno arduino = Manager.arduino;
+            //arduino.SetPinMode(ArduinoUnoPins.D9_PWM, PinModes.Servo);
+            //arduino.SetPinMode(ArduinoUnoPins.D10_PWM, PinModes.Servo);
             arduino.SetServo(ArduinoUnoPins.D9_PWM, degree);
             arduino.SetServo(ArduinoUnoPins.D10_PWM, degree);
             WaitAnm anm = new WaitAnm(1000);
             anm.AnmFinishedHandler += Servo_off;
+            anm.AnmFinishedHandler += DisplayTask;
             anm.Start();
         }
         void Servo_off(object sender, EventArgs e)

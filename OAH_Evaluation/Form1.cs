@@ -33,8 +33,6 @@ namespace OAH_Evaluation
 {
     public partial class Form1 : Form
     {
-        bool debug = true;
-
         TaskDisplay tDisplay;
 
         ArduinoUno arduino;
@@ -43,7 +41,7 @@ namespace OAH_Evaluation
             InitializeComponent();
 
             // Create a new connection
-            if (!debug) { 
+            if (!Task.debug) { 
                 arduino = new ArduinoUno("COM4");
                 arduino.SetPinMode(ArduinoUnoPins.D13, PinModes.Output);
             }
@@ -54,10 +52,12 @@ namespace OAH_Evaluation
 
         void Form1_FormClosed(object sender, FormClosedEventArgs e)
         {
-            arduino.SetPinMode(ArduinoUnoPins.D9_PWM, PinModes.Input);
-            arduino.SetPinMode(ArduinoUnoPins.D10_PWM, PinModes.Input);
-            // dispose of the object
-            arduino.Dispose();
+            if (!Task.debug) {
+                arduino.SetPinMode(ArduinoUnoPins.D9_PWM, PinModes.Input);
+                arduino.SetPinMode(ArduinoUnoPins.D10_PWM, PinModes.Input);
+                // dispose of the object
+                arduino.Dispose();
+            }
         }
 
         
@@ -88,23 +88,45 @@ namespace OAH_Evaluation
 
         }
 
+        int maxDegree = 180;
         private void button5_Click(object sender, EventArgs e)
         {
-            int[] list = {0,25,50,75,100 };
+            int[] list = { 
+                             (int)(maxDegree * 0), 
+                             (int)(maxDegree * 0.25), 
+                             (int)(maxDegree * 0.5), 
+                             (int)(maxDegree * 0.75), 
+                             (int)(maxDegree * 1) 
+                         };
             Manager manager = new Manager("1", 10, list
-                ,"現在の聴覚の開放と閉塞の感覚の度合いをスライダーで選んでOKを押してください．"
+//            Manager manager = new Manager("1", 1, list
+                ,"現在の聴覚の「開放と閉塞の感覚の度合い」をスライダーで選んでOKを押してください．"
                 ,"開放的"
                 ,"閉塞的"
                 ,arduino,tDisplay);
-            //manager.Dump();
             manager.Initialize();
         }
 
         private void button6_Click(object sender, EventArgs e)
         {
-            //int[] list = { 0, 100 };
-            //Manager manager = new Manager("1", 10, list, arduino,tDisplay);
-            ////manager.Dump();
+            int[] list = { 0, maxDegree };
+            Manager manager = new Manager("1", 1, list
+                , "現在の音楽鑑賞の「爽快感の度合い」をスライダーで選んでOKを押してください．"
+                , "高い"
+                , "低い"
+                , arduino, tDisplay);
+            manager.Initialize();
+        }
+
+        private void button7_Click(object sender, EventArgs e)
+        {
+            int[] list = { 0, maxDegree };
+            Manager manager = new Manager("1", 1, list
+                , "現在の音楽鑑賞の「音楽への没入感の度合い」をスライダーで選んでOKを押してください．"
+                , "高い"
+                , "低い"
+                , arduino, tDisplay);
+            manager.Initialize();
 
         }
     }
