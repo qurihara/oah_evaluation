@@ -11,16 +11,23 @@ namespace OAH_Evaluation
 {
     public class Manager
     {
+        public static string logPath = "log.csv";
         public static ArduinoUno arduino;
 
         protected Queue<Task> taskQueue;
+        protected Task curTask;
         protected static int nShuffleFactor = 5; //リスト要素数の5倍シャッフルする。
 
-        public Manager(int iteration, int[] degreeList, ArduinoUno arduinouno)
+        protected string user_id = "";
+
+        public Manager(string user_id, int iteration, int[] degreeList, ArduinoUno arduinouno)
         {
+            logPath = "log" + DateTime.Now.Ticks.ToString() + ".csv";
+            this.user_id = user_id;
             arduino = arduinouno;
 
             taskQueue = new Queue<Task>();
+            curTask = null;
 
             List<Task> taskList = new List<Task>();
             for (int i = 0; i < iteration; i++)
@@ -41,15 +48,38 @@ namespace OAH_Evaluation
 
         }
 
-        public void Dump(StreamWriter sw)
+        public void Initialize()
         {
-            sw.WriteLine("trial_id, " + Task.DumpLegend());
+            //TODO モーターを動かして慣らす．
+        }
+
+        public bool StartNextTask()
+        {
+            if (taskQueue.Count == 0)
+            {
+                return false;
+            }
+            curTask = taskQueue.Dequeue();
+            curTask.GetReady();
+            return true;
+        }
+        public void EndTask(int scale)
+        {
+            curTask.Scale = scale;
+            Dump();
+        }
+
+        public void Dump()
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.AppendLine("user_id, trial_id, " + Task.DumpLegend());
             int trial_id = 1;
             foreach (Task t in taskQueue)
             {
-                sw.WriteLine(trial_id.ToString() + ", " + t.Dump());
+                sb.AppendLine(user_id + ", " + trial_id.ToString() + ", " + t.Dump());
                 trial_id++;
             }
+            File.AppendAllText(logPath, sb.ToString(), Encoding.GetEncoding("shift-jis"));      
         }
         
         protected static void Shuffle(List<Task> list)
