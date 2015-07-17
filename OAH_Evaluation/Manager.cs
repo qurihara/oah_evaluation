@@ -25,7 +25,7 @@ namespace OAH_Evaluation
 
         public Manager(string user_id, int iteration, int[] degreeList,string taskDesc, string labelLeftMost, string labelRightMost, ArduinoUno arduinouno,TaskDisplay tDisplay)
         {
-            logPath = "log" + DateTime.Now.Ticks.ToString() + ".csv";
+            logPath = "log_" + user_id + ".csv";
             this.user_id = user_id;
             arduino = arduinouno;
             Manager.tDisplay = tDisplay;

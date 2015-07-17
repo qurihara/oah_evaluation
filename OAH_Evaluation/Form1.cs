@@ -60,6 +60,10 @@ namespace OAH_Evaluation
             }
         }
 
+        private void Form1_Load(object sender, EventArgs e)
+        {
+            textBoxId.Text = DateTime.Now.Ticks.ToString();
+        }
         
         private void button1_Click(object sender, EventArgs e)
         {
@@ -91,6 +95,7 @@ namespace OAH_Evaluation
         int maxDegree = 180;
         private void button5_Click(object sender, EventArgs e)
         {
+            string id = textBoxId.Text;
             int[] list = { 
                              (int)(maxDegree * 0), 
                              (int)(maxDegree * 0.25), 
@@ -98,9 +103,9 @@ namespace OAH_Evaluation
                              (int)(maxDegree * 0.75), 
                              (int)(maxDegree * 1) 
                          };
-            Manager manager = new Manager("1", 10, list
-//            Manager manager = new Manager("1", 1, list
-                ,"現在の聴覚の「開放と閉塞の感覚の度合い」をスライダーで選んでOKを押してください．"
+            Manager manager = new Manager(id, 10, list
+//            Manager manager = new Manager(id, 1, list
+                ,"現在のヘッドフォンによる聴覚の「開放と閉塞の感覚の度合い」をスライダーで選んでOKを押してください．"
                 ,"開放的"
                 ,"閉塞的"
                 ,arduino,tDisplay);
@@ -109,9 +114,12 @@ namespace OAH_Evaluation
 
         private void button6_Click(object sender, EventArgs e)
         {
+            string id = textBoxId.Text;
+
+            axWindowsMediaPlayer1.URL = "1.mp3";
             int[] list = { 0, maxDegree };
-            Manager manager = new Manager("1", 1, list
-                , "現在の音楽鑑賞の「爽快感の度合い」をスライダーで選んでOKを押してください．"
+            Manager manager = new Manager(id, 1, list
+                , "現在のヘッドフォンによる音楽鑑賞の「爽快感の度合い」をスライダーで選んでOKを押してください．"
                 , "高い"
                 , "低い"
                 , arduino, tDisplay);
@@ -120,14 +128,47 @@ namespace OAH_Evaluation
 
         private void button7_Click(object sender, EventArgs e)
         {
+            string id = textBoxId.Text;
+
+            axWindowsMediaPlayer1.URL = "1.mp3";
             int[] list = { 0, maxDegree };
-            Manager manager = new Manager("1", 1, list
-                , "現在の音楽鑑賞の「音楽への没入感の度合い」をスライダーで選んでOKを押してください．"
+            Manager manager = new Manager(id, 1, list
+                , "現在のヘッドフォンによる音楽鑑賞の「音楽への没入感の度合い」をスライダーで選んでOKを押してください．"
                 , "高い"
                 , "低い"
                 , arduino, tDisplay);
             manager.Initialize();
 
         }
+
+        private void button8_Click(object sender, EventArgs e)
+        {
+            string id = textBoxId.Text;
+
+            axWindowsMediaPlayer1.URL = "2.mp3";
+            int[] list = { 0, maxDegree };
+            Manager manager = new Manager(id, 1, list
+                , "現在の音楽鑑賞の「爽快感の度合い」をスライダーで選んでOKを押してください．"
+                , "高い"
+                , "低い"
+                , arduino, tDisplay);
+            manager.Initialize();
+
+        }
+
+        private void button9_Click(object sender, EventArgs e)
+        {
+            string id = textBoxId.Text;
+
+            axWindowsMediaPlayer1.URL = "2.mp3";
+            int[] list = { 0, maxDegree };
+            Manager manager = new Manager(id, 1, list
+                , "現在の音楽鑑賞の「音楽への没入感の度合い」をスライダーで選んでOKを押してください．"
+                , "高い"
+                , "低い"
+                , arduino, tDisplay);
+            manager.Initialize();
+        }
+
     }
 }

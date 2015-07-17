@@ -37,6 +37,10 @@
             this.button6 = new System.Windows.Forms.Button();
             this.axWindowsMediaPlayer1 = new AxWMPLib.AxWindowsMediaPlayer();
             this.button7 = new System.Windows.Forms.Button();
+            this.button8 = new System.Windows.Forms.Button();
+            this.button9 = new System.Windows.Forms.Button();
+            this.textBoxId = new System.Windows.Forms.TextBox();
+            this.label1 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.axWindowsMediaPlayer1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -102,7 +106,7 @@
             this.button6.Name = "button6";
             this.button6.Size = new System.Drawing.Size(138, 38);
             this.button6.TabIndex = 5;
-            this.button6.Text = "start ev2";
+            this.button6.Text = "start ev2-1";
             this.button6.UseVisualStyleBackColor = true;
             this.button6.Click += new System.EventHandler(this.button6_Click);
             // 
@@ -122,15 +126,57 @@
             this.button7.Name = "button7";
             this.button7.Size = new System.Drawing.Size(138, 38);
             this.button7.TabIndex = 7;
-            this.button7.Text = "start ev2";
+            this.button7.Text = "start ev2-2";
             this.button7.UseVisualStyleBackColor = true;
             this.button7.Click += new System.EventHandler(this.button7_Click);
+            // 
+            // button8
+            // 
+            this.button8.Location = new System.Drawing.Point(321, 141);
+            this.button8.Margin = new System.Windows.Forms.Padding(6, 5, 6, 5);
+            this.button8.Name = "button8";
+            this.button8.Size = new System.Drawing.Size(138, 38);
+            this.button8.TabIndex = 8;
+            this.button8.Text = "start ev3-1";
+            this.button8.UseVisualStyleBackColor = true;
+            this.button8.Click += new System.EventHandler(this.button8_Click);
+            // 
+            // button9
+            // 
+            this.button9.Location = new System.Drawing.Point(321, 189);
+            this.button9.Margin = new System.Windows.Forms.Padding(6, 5, 6, 5);
+            this.button9.Name = "button9";
+            this.button9.Size = new System.Drawing.Size(138, 38);
+            this.button9.TabIndex = 9;
+            this.button9.Text = "start ev3-2";
+            this.button9.UseVisualStyleBackColor = true;
+            this.button9.Click += new System.EventHandler(this.button9_Click);
+            // 
+            // textBoxId
+            // 
+            this.textBoxId.Location = new System.Drawing.Point(193, 312);
+            this.textBoxId.Name = "textBoxId";
+            this.textBoxId.Size = new System.Drawing.Size(266, 27);
+            this.textBoxId.TabIndex = 10;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(46, 312);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(126, 21);
+            this.label1.TabIndex = 11;
+            this.label1.Text = "participant ID";
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(11F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(521, 435);
+            this.Controls.Add(this.label1);
+            this.Controls.Add(this.textBoxId);
+            this.Controls.Add(this.button9);
+            this.Controls.Add(this.button8);
             this.Controls.Add(this.button7);
             this.Controls.Add(this.axWindowsMediaPlayer1);
             this.Controls.Add(this.button6);
@@ -142,8 +188,10 @@
             this.Margin = new System.Windows.Forms.Padding(6, 5, 6, 5);
             this.Name = "Form1";
             this.Text = "OAH Evaluation";
+            this.Load += new System.EventHandler(this.Form1_Load);
             ((System.ComponentModel.ISupportInitialize)(this.axWindowsMediaPlayer1)).EndInit();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -157,6 +205,10 @@
         private System.Windows.Forms.Button button6;
         private AxWMPLib.AxWindowsMediaPlayer axWindowsMediaPlayer1;
         private System.Windows.Forms.Button button7;
+        private System.Windows.Forms.Button button8;
+        private System.Windows.Forms.Button button9;
+        private System.Windows.Forms.TextBox textBoxId;
+        private System.Windows.Forms.Label label1;
     }
 }
 
