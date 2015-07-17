@@ -33,17 +33,23 @@ namespace OAH_Evaluation
 {
     public partial class Form1 : Form
     {
+        bool debug = true;
+
+        TaskDisplay tDisplay;
+
         ArduinoUno arduino;
         public Form1()
         {
             InitializeComponent();
 
             // Create a new connection
-            //var arduino = new ArduinoUno("COM3");
-            arduino = new ArduinoUno("COM4");
-            arduino.SetPinMode(ArduinoUnoPins.D13, PinModes.Output);
-
+            if (!debug) { 
+                arduino = new ArduinoUno("COM4");
+                arduino.SetPinMode(ArduinoUnoPins.D13, PinModes.Output);
+            }
             this.FormClosed += Form1_FormClosed;
+
+            tDisplay = new TaskDisplay();
         }
 
         void Form1_FormClosed(object sender, FormClosedEventArgs e)
@@ -85,15 +91,20 @@ namespace OAH_Evaluation
         private void button5_Click(object sender, EventArgs e)
         {
             int[] list = {0,25,50,75,100 };
-            Manager manager = new Manager("1", 10, list,arduino);
-            manager.Dump();
+            Manager manager = new Manager("1", 10, list
+                ,"現在の聴覚の開放と閉塞の感覚の度合いをスライダーで選んでOKを押してください．"
+                ,"開放的"
+                ,"閉塞的"
+                ,arduino,tDisplay);
+            //manager.Dump();
+            manager.Initialize();
         }
 
         private void button6_Click(object sender, EventArgs e)
         {
-            int[] list = { 0, 100 };
-            Manager manager = new Manager("1", 10, list, arduino);
-            manager.Dump();
+            //int[] list = { 0, 100 };
+            //Manager manager = new Manager("1", 10, list, arduino,tDisplay);
+            ////manager.Dump();
 
         }
     }
