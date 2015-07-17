@@ -7,6 +7,8 @@ using System.Text;
 using Sharpduino;
 using Sharpduino.Constants;
 
+using Qurihara.Anm;
+
 namespace OAH_Evaluation
 {
     public class Manager
@@ -33,20 +35,21 @@ namespace OAH_Evaluation
             curTask = null;
 
             List<Task> taskList = new List<Task>();
-            int id = 1;
             for (int i = 0; i < iteration; i++)
             {
                 for (int j = 0; j < degreeList.Length; j++)
                 {
-                    taskList.Add(new Task(id,degreeList[j],taskDesc,labelLeftMost,labelRightMost));
-                    id++;
+                    taskList.Add(new Task(degreeList[j],taskDesc,labelLeftMost,labelRightMost));
                 }
             }
             Shuffle(taskList);
 
+            int id = 1;
             foreach (Task t in taskList)
             {
+                t.Id = id;
                 taskQueue.Enqueue(t);
+                id++;
             }
             taskList.Clear();
             taskList = null;
@@ -127,7 +130,11 @@ namespace OAH_Evaluation
     {
         static bool debug = true;
 
-        int id;
+        protected int id;
+        public int Id
+        {
+            set { id = value; }
+        }
         protected int degree;
         protected int scale;
         public int Scale
@@ -136,9 +143,8 @@ namespace OAH_Evaluation
         }
 
         protected string taskDesc, labelLeftMost, labelRightMost;
-        public Task(int id, int deg,string taskDesc, string labelLeftMost, string labelRightMost)
+        public Task(int deg,string taskDesc, string labelLeftMost, string labelRightMost)
         {
-            this.id = id;
             degree = deg;
             scale = -1;
 
@@ -149,19 +155,52 @@ namespace OAH_Evaluation
 
         public void GetReady()
         {
-            if (!debug)
-            {
-                ArduinoUno arduino = Manager.arduino;
-                arduino.SetPinMode(ArduinoUnoPins.D9_PWM, PinModes.Servo);
-                arduino.SetPinMode(ArduinoUnoPins.D10_PWM, PinModes.Servo);
-                arduino.SetServo(ArduinoUnoPins.D9_PWM, degree);
-                arduino.SetServo(ArduinoUnoPins.D10_PWM, degree);
-            }
-            Manager.tDisplay.labelTaskDesc.Text = "[" + id.ToString() + "] " +  taskDesc;
-            Manager.tDisplay.labelLeftMost.Text = labelLeftMost;
-            Manager.tDisplay.labelRightMost.Text = labelRightMost;
+            Manager.tDisplay.labelTaskDesc.Text = "準備中";
+            Manager.tDisplay.labelLeftMost.Text = "";
+            Manager.tDisplay.labelRightMost.Text = "";
+            Manager.tDisplay.buttonOK.Enabled = false;
+            Manager.tDisplay.trackBarScale.Value = 500;
             Manager.tDisplay.Visible = true;
 
+            WaitAnm anm = new WaitAnm(1000);
+            anm.AnmFinishedHandler += DisplayTask;
+            if (!debug)
+            {
+                Servo_reset();
+                anm.AnmFinishedHandler += Servo_set;
+            }
+            anm.Start();
+        }
+
+        void DisplayTask(object sender, EventArgs e)
+        {
+            Manager.tDisplay.labelTaskDesc.Text = "[" + id.ToString() + "] " + taskDesc;
+            Manager.tDisplay.labelLeftMost.Text = labelLeftMost;
+            Manager.tDisplay.labelRightMost.Text = labelRightMost;
+            Manager.tDisplay.buttonOK.Enabled = true;
+        }
+        void Servo_reset()
+        {
+            ArduinoUno arduino = Manager.arduino;
+            arduino.SetPinMode(ArduinoUnoPins.D9_PWM, PinModes.Servo);
+            arduino.SetPinMode(ArduinoUnoPins.D10_PWM, PinModes.Servo);
+            arduino.SetServo(ArduinoUnoPins.D9_PWM, 0);
+            arduino.SetServo(ArduinoUnoPins.D10_PWM, 0);
+        }
+        void Servo_set(object sender, EventArgs e)
+        {
+            ArduinoUno arduino = Manager.arduino;
+            arduino.SetServo(ArduinoUnoPins.D9_PWM, degree);
+            arduino.SetServo(ArduinoUnoPins.D10_PWM, degree);
+            WaitAnm anm = new WaitAnm(1000);
+            anm.AnmFinishedHandler += Servo_off;
+            anm.Start();
+        }
+        void Servo_off(object sender, EventArgs e)
+        {
+            ArduinoUno arduino = Manager.arduino;
+            arduino.SetPinMode(ArduinoUnoPins.D9_PWM, PinModes.Input);
+            arduino.SetPinMode(ArduinoUnoPins.D10_PWM, PinModes.Input);
         }
 
         public static string DumpLegend()
