@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using Sharpduino;
 using Sharpduino.Constants;
+using System.IO;
 
             // Read an analog value 
             //float valueInVolts = arduino.ReadAnalog(ArduinoUnoAnalogPins.A0);
@@ -80,6 +81,16 @@ namespace OAH_Evaluation
             arduino.SetServo(ArduinoUnoPins.D9_PWM, 0);
             arduino.SetServo(ArduinoUnoPins.D10_PWM, 0);
 
+        }
+
+        private void button5_Click(object sender, EventArgs e)
+        {
+            int[] list = {0,25,50,75,100 };
+            Manager manager = new Manager(10, list,arduino);
+            using (StreamWriter sw = new StreamWriter("log.csv"))
+            {
+                manager.Dump(sw);
+            }
         }
     }
 }
