@@ -191,8 +191,8 @@ namespace OAH_Evaluation
         void DisplayTask(object sender, EventArgs e)
         {
             //debug
-            Manager.tDisplay.labelTaskDesc.Text = "[" + degree.ToString() + "] " + taskDesc;
-            //Manager.tDisplay.labelTaskDesc.Text = "[" + id.ToString() + "] " + taskDesc;
+            //Manager.tDisplay.labelTaskDesc.Text = "[" + degree.ToString() + "] " + taskDesc;
+            Manager.tDisplay.labelTaskDesc.Text = "[" + id.ToString() + "] " + taskDesc;
             Manager.tDisplay.labelLeftMost.Text = labelLeftMost;
             Manager.tDisplay.labelRightMost.Text = labelRightMost;
             Manager.tDisplay.buttonOK.Enabled = true;
