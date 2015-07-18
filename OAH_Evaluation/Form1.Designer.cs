@@ -41,6 +41,7 @@
             this.button9 = new System.Windows.Forms.Button();
             this.textBoxId = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
+            this.button10 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.axWindowsMediaPlayer1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -168,11 +169,23 @@
             this.label1.TabIndex = 11;
             this.label1.Text = "participant ID";
             // 
+            // button10
+            // 
+            this.button10.Location = new System.Drawing.Point(321, 68);
+            this.button10.Margin = new System.Windows.Forms.Padding(6, 5, 6, 5);
+            this.button10.Name = "button10";
+            this.button10.Size = new System.Drawing.Size(138, 38);
+            this.button10.TabIndex = 12;
+            this.button10.Text = "initialize";
+            this.button10.UseVisualStyleBackColor = true;
+            this.button10.Click += new System.EventHandler(this.button10_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(11F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(521, 435);
+            this.Controls.Add(this.button10);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.textBoxId);
             this.Controls.Add(this.button9);
@@ -209,6 +222,7 @@
         private System.Windows.Forms.Button button9;
         private System.Windows.Forms.TextBox textBoxId;
         private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Button button10;
     }
 }
 

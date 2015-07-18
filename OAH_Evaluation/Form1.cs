@@ -64,7 +64,41 @@ namespace OAH_Evaluation
         {
             textBoxId.Text = DateTime.Now.Ticks.ToString();
         }
-        
+
+        private void Initialize()
+        {
+            if (!Task.debug)
+            {
+                arduino.SetPinMode(ArduinoUnoPins.D9_PWM, PinModes.Servo);
+                arduino.SetPinMode(ArduinoUnoPins.D10_PWM, PinModes.Servo);
+                Qurihara.Anm.WaitAnm anm = new Qurihara.Anm.WaitAnm(1000);
+                anm.AnmFinishedHandler += anm_AnmFinishedHandler;
+                anm.Start();
+            }
+        }
+
+        void anm_AnmFinishedHandler(object sender, EventArgs e)
+        {
+            arduino.SetServo(ArduinoUnoPins.D9_PWM, 180);
+            arduino.SetServo(ArduinoUnoPins.D10_PWM, 180);
+            Qurihara.Anm.WaitAnm anm = new Qurihara.Anm.WaitAnm(1000);
+            anm.AnmFinishedHandler += anm_AnmFinishedHandler2;
+            anm.Start();
+        }
+        void anm_AnmFinishedHandler2(object sender, EventArgs e)
+        {
+            arduino.SetServo(ArduinoUnoPins.D9_PWM, 0);
+            arduino.SetServo(ArduinoUnoPins.D10_PWM, 0);
+            Qurihara.Anm.WaitAnm anm = new Qurihara.Anm.WaitAnm(1000);
+            anm.AnmFinishedHandler += anm_AnmFinishedHandler3;
+            anm.Start();
+        }
+        void anm_AnmFinishedHandler3(object sender, EventArgs e)
+        {
+            arduino.SetPinMode(ArduinoUnoPins.D9_PWM, PinModes.Input);
+            arduino.SetPinMode(ArduinoUnoPins.D10_PWM, PinModes.Input);
+        }        
+
         private void button1_Click(object sender, EventArgs e)
         {
             arduino.SetDO(ArduinoUnoPins.D13, true);
@@ -168,6 +202,11 @@ namespace OAH_Evaluation
                 , "低い"
                 , arduino, tDisplay);
             manager.Initialize();
+        }
+
+        private void button10_Click(object sender, EventArgs e)
+        {
+            Initialize();
         }
 
     }
